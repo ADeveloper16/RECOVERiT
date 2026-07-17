@@ -5,7 +5,7 @@
 2. [iNFO](#info)
 3. [Functions](#functions)
 ---
-This is an EXPERIMENTAL Project That tried to bring some advanced options for your phone
+This is an EXPERIMENTAL Project That tried to bring some advanced options for your phone Samsung For Now...
 ## Main Features
 1. Light only about 10.8kB
 2. Functional Key Spam Protection
