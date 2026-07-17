@@ -2,8 +2,7 @@
 #      RECOVERiT - GITIGNORE TEMPLATE
 # ==========================================
 
-# 1. Protect User Data (Crucial for RECOVER mode)
-# This stops private phone data from uploading online if you test your script locally.
+
 /Recovered_Photos/
 /backup/
 /extracted/
@@ -13,18 +12,17 @@
 *.mp4
 *.heic
 
-# 2. Block Android System Junk
-# Stops local ADB log dumps from cluttering your repository.
+
 *.log
 adb_log.txt
 
-# 3. Block Operating System Hidden Files
+
 .DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# 4. Block IDE / Text Editor Temp Files
+
 *.swp
 *.swo
 *~
