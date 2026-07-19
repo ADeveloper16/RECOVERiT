@@ -2,7 +2,7 @@
 
 clear
 echo ""
-echo "        RECOVERiTE - SETUP WIZARD        "
+echo "            RECOVERiTE - SET           "
 echo ""
 echo ""
 echo "[*] Environment..."
@@ -24,7 +24,7 @@ if command -v adb &> /dev/null; then
 else
     echo "[-] ADB: NOT FOUND."
     echo ""
-
+fi
 echo ""
 echo ""
 echo "             SETUP COMPLETE              "
@@ -37,6 +37,6 @@ if [[ "$launch_now" == "y" || "$launch_now" == "Y" ]]; then
     sleep 0.5
     ./RECOVERiTE.sh
 else
-    echo "[+] Setup finished!
+    echo "[+] Finished!"
     exit 0
 fi

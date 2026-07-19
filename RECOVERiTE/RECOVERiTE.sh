@@ -5,15 +5,14 @@ while true; do
      echo ""
      echo "               RECOVERiTE                "
      echo ""
-     echo " Ensure The Target Device Has Enabled USB
- Debugging"
+     echo " Ensure The Target Device Connected"
      
-     echo " Only Samsung... For Now."
+     echo ""
      echo ""
 
 if ! command -v adb &> /dev/null; then
-    echo "[-] ADB: NOT FOUND."
-    echo "    Run: sudo apt install adb"
+    echo "x ADB: NOT FOUND."
+    echo ""
     exit 1
 fi
 echo ""
@@ -28,18 +27,18 @@ read -p "[1-6]: " choice
 if [ -z "$choice" ]; then continue; fi
 case $choice in
     1)
-        echo "[*] ADB devices..."
+        echo "% ADB..."
         adb devices
         read -p "[ENTER=MENU]" temp
         ;;
     2)
-        read -p "Keyword to search: " keyword
-        echo "[*] Search packages '$keyword'..."
+        read -p "Search: " keyword
+        echo "% Search... '$keyword'..."
         adb shell pm list packages | grep "$keyword"
         read -p "[ENTER=MENU]" temp
         ;;
     3)
-        echo "[*] Disabling"
+        echo "% Disable"
         adb shell pm disable-user --user 0 com.samsung.android.bixby.agent
         adb shell pm disable-user --user 0 com.samsung.android.bixby.wakeup
         adb shell pm disable-user --user 0 com.samsung.android.app.spage
@@ -58,48 +57,45 @@ case $choice in
         adb shell pm disable-user --user 0 com.samsung.android.aremoji
         adb shell pm disable-user --user 0 com.google.android.apps.tachyon
         read -p "[ENTER=MENU]" temp
-        echo "[+] Success"
+        echo "+ Success"
         ;;
     4)
-        echo "Exit Utility."
+        echo "Exit."
         exit 0
         ;;
     5)
       clear
         echo ""
-        echo "              RECOVERY MODE              "
+        echo "               RECOVERY                  "
         echo ""
-        echo "[*] Checking Target connection profile..."
+        echo "% Target connection..."
         echo ""
 
 
         DEVICE_STATUS=$(adb devices | grep -v "List" | awk '{print $2}' | xargs)
 
         if [ -z "$DEVICE_STATUS" ]; then
-            echo "[-] NO TARGET DEVICES: No Device detected."
-            echo "    Ensure your target device is powered on,
-    and in Recovery->Apply Updates From ADB"
+            echo "x ADB: No Device."
+            echo "    Ensure your target device"
         elif [ "$DEVICE_STATUS" = "sideload" ]; then
-            echo "STATUS: Device is in ADB Sideload / 'Apply Update' Mode!"
-            echo "    Your phone cannot process optimization tweaks in this state."
-            echo "    Fix: Reboot your phone normally, unlock the screen, and run this option again."
+            echo "STATUS: Device in ADB Sideload."
+            echo ""
+            echo ""
         elif [ "$DEVICE_STATUS" = "recovery" ]; then
-            echo "UNKNOWN RECOVERY: Device is booted into a Custom Recovery (TWRP/OrangeFox)."
-            echo "    To restore your frozen apps with zero data loss, navigate to:"
-            echo "    Advanced -> Terminal inside TWRP/OrangeFox, and run this command line:"
+            echo "RECOVERY: Device has Custom Recovery (TWRP/OrangeFox)."
             echo "    rm /data/system/users/0/package-restrictions.xml"
         else
-            echo "[+] System connection (Normal Mode). Get iNFO..."
+            echo "% Get iNFO..."
             LOG_FILE="~/OdinWorkspace/backups/disabled_packages.txt"
             if [ -f "$LOG_FILE" ]; then
                 while IFS= read -r package; do
-                    echo "[+] Restoring service: $package"
+                    echo "+ Restoring: $package"
                     adb shell pm enable --user 0 "$package" &> /dev/null
                 done < "$LOG_FILE"
-                echo "[=========================================]"
-                echo "[+] SUCCESS: System restored!"
+                echo ""
+                echo "+ SUCCESS: System restored!"
             else
-                echo "[-] Missing. RECOVERING SYS APPS"
+                echo "x Missing. RECOVERING SYS APPS"
                        adb shell pm enable --user 0 android
                        adb shell pm enable --user 0 com.android.systemui
                        adb shell pm enable --user 0 com.android.settings
@@ -136,26 +132,26 @@ case $choice in
       6)
             clear
             echo ""
-            echo "           DCIM RECOVER UTILITY          "
+            echo "             DCIM RECOVER             "
             echo ""
-            echo "[*] Check storage path..."
+            echo "% Storage path..."
             echo ""
 
             
             BACKUP_DIR="$HOME/PHONE/backups/Phone_Photos"
             mkdir -p "$BACKUP_DIR"
 
-            echo "[*] media asset..."
-            echo "    (do not unplug)"
+            echo "% Media asset..."
+            echo ""
             echo ""
 
            
-            echo "[*] Getting DCIM..."
+            echo "% Getting DCIM..."
             adb pull /sdcard/DCIM/ "$BACKUP_DIR/"
             DCIM_STATUS=$?
 
            
-            echo "[*] Getting Pictures..."
+            echo "% Getting Pictures..."
             adb pull /sdcard/Pictures/ "$BACKUP_DIR/"
             PICTURES_STATUS=$?
 
@@ -164,9 +160,9 @@ case $choice in
                 echo "x BACKUP: FAIL"
                 echo "    No Devices"
             else
-                echo "[=========================================]"
+                echo ""
                 echo "+ BACKUP: Complete!"
-                echo "    Images stored in: $BACKUP_DIR"
+                echo "    IMAGE: $BACKUP_DIR"
             fi
 
                 echo ""
@@ -174,7 +170,7 @@ case $choice in
             ;;
 
 *)
-    echo "[-] Invalid option."
+    echo "% Invalid."
     sleep 0.5
     ;;
 esac
