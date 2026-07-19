@@ -1,6 +1,6 @@
- 
-                   WELCOME TO RECOVERiTE                               
- 
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │                  WELCOME TO RECOVERiT UTILITY                          │
+ └────────────────────────────────────────────────────────────────────────┘
 This Utility i ever made first has advanced features but before using it
 You should enable USB Debugging
 

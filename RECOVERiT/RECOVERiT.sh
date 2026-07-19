@@ -1,30 +1,42 @@
 #!/bin/bash
 
+G="\033[0;32m"
+W="\033[0;37m"
+B="\033[0;34m"
+R="\033[0;31m"
+N="\033[0m"
+
+
+
+echo -e "${G}Done!${N}"
+sleep 0.4
+
+
 while true; do
      clear
-     echo "========================================="
-     echo "                RECOVERiT                "
-     echo "========================================="
-     echo " Ensure The Target Device Has Enabled USB
- Debugging"
+     echo -e "${G}┌───────────────────────────────────────┐"
+     echo -e "${G}│${W}              RECOVERiT                ${G}│"
+     echo -e "${G}└───────────────────────────────────────┘"
+     echo -e "${W} Make Sure The Target Device Has Enabled 
+ USB Debugging Before Starting"
      
-     echo " Only Samsung... For Now."
+     echo ""
      echo ""
 
 if ! command -v adb &> /dev/null; then
-    echo "[-] ERROR: ADB is not installed on this Computer."
-    echo "    Run: sudo apt install adb"
+    echo -e "${R}[-] ERROR: ADB is not installed on this Computer."
+    echo -e "${R} ADB: open terminal run: sudo apt install adb."
     exit 1
 fi
-echo "========================================="
-echo "1) Check ADB Devices"
-echo "2) Search a Package Name"
-echo "3) Disable Suggested Apps"
-echo "4) Exit the Utility"
-echo "5) RECOVERY (EXPERIMENTAL)"
-echo "6) RECOVER DCIM (EXPERIMENTAL)"
-echo "========================================="
-read -p "Select Option [1-6]: " choice
+echo -e "${W}┌───────────────────────────────────────┐"
+echo -e "${W}│${G}1) ${W}Check ADB Devices                   ${W}│"
+echo -e "${W}│${G}2) ${W}Search a Package Name               ${W}│"
+echo -e "${W}│${G}3) ${W}Disable Suggested Apps              ${W}│"
+echo -e "${W}│${G}4) ${W}Exit the Utility                    ${W}│"
+echo -e "${W}│${R}5) ${W}RECOVERY ${R}(EXPERIMENTAL)             ${W}│"
+echo -e "${W}│${R}6) ${W}RECOVER DCIM ${R}(EXPERIMENTAL)         ${W}│"
+echo -e "${W}└───────────────────────────────────────┘"
+read -p "$(echo -e "${W} Select An Option [1-6]: ${W}")" choice
 if [ -z "$choice" ]; then continue; fi
 case $choice in
     1)
@@ -33,13 +45,13 @@ case $choice in
         read -p "Press [ENTER] to return menu" temp
         ;;
     2)
-        read -p "Enter keyword to search (e.g. samsung, google): " keyword
+        read -p "Enter keyword to search packages on your Device: " keyword
         echo "[*] Searching packages containing '$keyword'..."
         adb shell pm list packages | grep "$keyword"
-        read -p "Press [ENTER]to return menu" temp
+        read -p "Press [ENTER] to return menu" temp
         ;;
     3)
-        echo "[*] Disabling Suggested Apps"
+        echo "[*] Disabling Suggested Apps On Your Device"
         adb shell pm disable-user --user 0 com.samsung.android.bixby.agent
         adb shell pm disable-user --user 0 com.samsung.android.bixby.wakeup
         adb shell pm disable-user --user 0 com.samsung.android.app.spage
@@ -58,7 +70,7 @@ case $choice in
         adb shell pm disable-user --user 0 com.samsung.android.aremoji
         adb shell pm disable-user --user 0 com.google.android.apps.tachyon
         read -p "Press [ENTER] to return menu" temp
-        echo "[+] Success"
+        echo "[+] Success!"
         ;;
     4)
         echo "Exit Utility."
@@ -66,30 +78,27 @@ case $choice in
         ;;
     5)
       clear
-        echo "========================================="
-        echo "              RECOVERY MODE              "
-        echo "========================================="
-        echo "[*] Checking Target device connection profile..."
+        echo "┌───────────────────────────────────────┐"
+        echo "│              RECOVERY MODE            │"
+        echo "└───────────────────────────────────────┘"
+        echo "[*] Checking Target device connection..."
         echo ""
 
 
         DEVICE_STATUS=$(adb devices | grep -v "List" | awk '{print $2}' | xargs)
 
         if [ -z "$DEVICE_STATUS" ]; then
-            echo "[-] NO TARGET DEVICES: No Device detected."
-            echo "    Ensure your target device is powered on,
-    and in Recovery->Apply Updates From ADB"
+            echo -e "${R}[-] NO TARGET DEVICES: No Device detected."
+            echo "    Ensure your target device."
         elif [ "$DEVICE_STATUS" = "sideload" ]; then
-            echo "STATUS: Device is in ADB Sideload / 'Apply Update' Mode!"
-            echo "    Your phone cannot process optimization tweaks in this state."
-            echo "    Fix: Reboot your phone normally, unlock the screen, and run this option again."
+            echo -e "${G}STATUS: Device is in ADB Sideload / 'Apply Update' Mode!"
         elif [ "$DEVICE_STATUS" = "recovery" ]; then
-            echo "UNKNOWN RECOVERY: Device is booted into a Custom Recovery (TWRP/OrangeFox)."
+            echo -e "${R}UNKNOWN RECOVERY: Device is booted into a Custom Recovery (TWRP/OrangeFox)."
             echo "    To restore your frozen apps with zero data loss, navigate to:"
             echo "    Advanced -> Terminal inside TWRP/OrangeFox, and run this command line:"
             echo "    rm /data/system/users/0/package-restrictions.xml"
         else
-            echo "[+] System connection (Normal Mode). Injecting recovery payload..."
+            echo -e "${G}[+] System connection (Normal Mode). Injecting recovery payload..."
             LOG_FILE="~/OdinWorkspace/backups/disabled_packages.txt"
             if [ -f "$LOG_FILE" ]; then
                 while IFS= read -r package; do
@@ -97,9 +106,9 @@ case $choice in
                     adb shell pm enable --user 0 "$package" &> /dev/null
                 done < "$LOG_FILE"
                 echo "[=========================================]"
-                echo "[+] SUCCESS: System services restored!"
+                echo -e "${G}[+] SUCCESS: System services restored!"
             else
-                echo "[-] Backup file missing. RECOVERING SYS APPS"
+                echo -e "${R}[-] Backup file missing. ${G}RECOVERING SYSTEM APPS"
                        adb shell pm enable --user 0 android
                        adb shell pm enable --user 0 com.android.systemui
                        adb shell pm enable --user 0 com.android.settings
@@ -128,16 +137,16 @@ case $choice in
 
                fi
 
-                echo "[+] Assets recovered!" 
+                echo "[+] Assets recovered Successfully!" 
            
-              read -p "Press [ENTER] to return menu" temp
+              read -p "$(echo -e "${W}Press [ENTER] to return menu${W}")" temp
               ;;
         
       6)
             clear
-            echo "========================================="
-            echo "           DCIM RECOVER UTILITY          "
-            echo "========================================="
+            echo "┌───────────────────────────────────────┐"
+            echo "│          DCIM RECOVER UTILITY         │"
+            echo "└───────────────────────────────────────┘"
             echo "[*] Checking storage path..."
             echo ""
 
@@ -147,19 +156,19 @@ case $choice in
 
             echo "[*] Initializing media asset..."
             echo "    (To successfull do not unplug)"
-            echo "----------------------------------------="
+            echo "──────────────────────────────────────"
 
            
-            echo "[*] Transferring DCIM content..."
+            echo "[*] Copying Pictures To Computer..."
             adb pull /sdcard/DCIM/ "$BACKUP_DIR/"
             DCIM_STATUS=$?
 
            
-            echo "[*] Transferring Pictures content..."
+            echo "[*] Copying Pictures To Computer..."
             adb pull /sdcard/Pictures/ "$BACKUP_DIR/"
             PICTURES_STATUS=$?
 
-            echo "------------------------------------------"
+            echo "──────────────────────────────────────────"
             if [ $DCIM_STATUS -ne 0 ] || [ $PICTURES_STATUS -ne 0 ]; then
                 echo "[-] ERROR: BACKUP FAIL"
                 echo "    No Devices Found"
@@ -174,7 +183,7 @@ case $choice in
             ;;
 
 *)
-    echo "[-] Invalid option."
+    echo -e "${R} [-] Invalid option [Selected]."
     sleep 0.5
     ;;
 esac

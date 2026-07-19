@@ -1,9 +1,9 @@
 #!/bin/bash
 
 clear
-echo "========================================="
-echo "        RECOVERiT - SETUP WIZARD         "
-echo "========================================="
+echo "┌───────────────────────────────────────┐"
+echo "│       RECOVERiT - SETUP WIZARD        │"
+echo "└───────────────────────────────────────┘"
 echo ""
 echo "[*] Initializing environment..."
 sleep 1
@@ -30,12 +30,11 @@ else
 fi
 
 echo ""
-echo "========================================="
-echo "             SETUP COMPLETE              "
-echo "========================================="
+echo "┌───────────────────────────────────────┐"
+echo "│            SETUP COMPLETE             │"
+echo "└───────────────────────────────────────┘"
 echo ""
 read -p "Would you like to launch RECOVERiT right now? (Y/n): " launch_now
-
 if [[ "$launch_now" == "y" || "$launch_now" == "Y" ]]; then
     echo "[*] Launching..."
     sleep 0.5
