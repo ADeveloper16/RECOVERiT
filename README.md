@@ -39,6 +39,7 @@ Before coming to options you should know this is first release it CAN be UNSTABL
 ---
 ## Only About a kB! RECOVERiT and RECOVERiTE with same functions
 RECOVERiTE Added It Has Same function as RECOVERiT
-More iNFO about RECOVERiTE: RECOVERiTE Weights around 3.3 kB as a zip when it unzipped can reach to 8.8 kB only with same bundle as RECOVERiT
 
-While RECOVERiT Weights around 3.6 kB as a main version it can reach about 10.2 kB when unzipped with the same friendlier interface than RECOVERiTE.
+More iNFO about RECOVERiTE: RECOVERiTE Weights around 3.0 kB as a zip when it unzipped can reach to 8.0 kB only with same bundle as RECOVERiT and lighter than RECOVERiT
+
+While RECOVERiT Weights around 3.8 kB as a main version it can reach about 11.9 kB when unzipped with the same friendlier interface and modern interface than RECOVERiTE.
